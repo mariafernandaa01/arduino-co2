@@ -1,0 +1,44 @@
+#include <LiquidCrystal_I2C.h>
+#include <Wire.h>
+
+int buzzer = 8;
+int co_sensor = 4;
+int co_detected = 0;
+
+LiquidCrystal_I2C lcd(0x27, 16, 2); // pins
+
+int val = 0;
+
+void setup()
+{
+  lcd.init();
+  lcd.backlight();
+  lcd.clear();
+
+  Serial.begin(9600);
+
+  while(!Serial)
+  {
+    ;
+  }
+
+  Serial.println("Dispositivo conectado no BUS.");
+
+  pinMode(buzzer, OUTPUT);
+  pinMode(co_sensor, INPUT);
+}
+
+void loop() 
+{   
+      int co_detected = digitalRead(co_sensor);
+
+      int co_level = analogRead(co_sensor);
+      
+      lcd.setCursor(0, 1);
+      lcd.print(co_level);
+
+      Serial.println("O nível de CO2 é:");
+      Serial.println(co_level);
+      
+      delay(1000);
+}
